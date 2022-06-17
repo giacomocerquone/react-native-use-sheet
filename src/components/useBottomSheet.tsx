@@ -1,11 +1,14 @@
-import { createContext, useContext } from 'react';
-import type { SheetContext } from 'src/types';
+import { createContext, useContext, useEffect } from 'react';
+import type { contentType, HookOptions, SheetContext } from 'src/types';
 
 export const BottomSheetContext = createContext<SheetContext | undefined>(
   undefined
 );
 
-export const useBottomSheet = () => {
+export const useBottomSheet = (
+  content?: contentType,
+  { mode }: HookOptions = { mode: 'modal' }
+) => {
   const context = useContext(BottomSheetContext);
 
   if (!context) {
@@ -13,6 +16,14 @@ export const useBottomSheet = () => {
       'Error: could not find toast context value; please ensure the component is wrapped in a <BottomSheetProvider>'
     );
   }
+
+  const { setState } = context;
+
+  useEffect(() => {
+    if (content) {
+      setState((s) => ({ ...s, content, mode }));
+    }
+  }, [content, mode, setState]);
 
   return context;
 };

@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { ComponentProps, MutableRefObject, ReactElement } from 'react';
 import type {
   Animated,
@@ -12,11 +13,15 @@ import type {
   ScrollView,
 } from 'react-native-gesture-handler';
 
-export type nodeType = (
+export interface HookOptions {
+  mode: 'modal' | 'sheet';
+}
+
+export type contentType = (
   props:
     | {
         onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-        scrollRef: React.MutableRefObject<any>;
+        ref: React.MutableRefObject<any>;
         scrollEventThrottle: ComponentProps<
           typeof ScrollView
         >['scrollEventThrottle']; // If not set, the onScroll handler will fire only once on web
@@ -26,17 +31,16 @@ export type nodeType = (
 ) => ReactElement;
 
 export interface OpenSheetOptions {
-  content: nodeType;
+  content?: contentType;
   containerStyle?: ViewStyle;
 }
 
 export interface SheetContext {
   openSheet: ({ content }: OpenSheetOptions) => void;
   closeSheet: () => void;
-  content?: nodeType;
+  content?: contentType;
   rendered: boolean;
   visible: boolean;
-  setRendered: (rendered: boolean) => void;
   opacity: Animated.Value;
   translateY: Animated.Value;
   height: number;
@@ -46,4 +50,12 @@ export interface SheetContext {
     nativeEvent,
   }: PanGestureHandlerStateChangeEvent) => void;
   enabled: boolean;
+  setState: React.Dispatch<
+    React.SetStateAction<{
+      content?: contentType | undefined;
+      rendered: boolean;
+      containerStyle?: ViewStyle | undefined;
+    }>
+  >;
+  mode: 'modal' | 'sheet';
 }

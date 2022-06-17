@@ -1,35 +1,42 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Button, Text } from 'react-native';
+import { useState, forwardRef } from 'react';
+import { StyleSheet, View, Button, Text, RefreshControl } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
   useBottomSheet,
   BottomSheetProvider,
 } from 'react-native-usebottomsheet';
 
-const SheetContent = (props) => {
+const SheetContent = forwardRef<ScrollView>((props, ref) => {
+  const [refreshing, setRefreshing] = useState(false);
+
   return (
-    <ScrollView {...props}>
-      {new Array(100).fill(1).map(() => (
-        <Text style={{ color: '#000' }}>text text text</Text>
+    <ScrollView
+      {...props}
+      ref={ref}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => setRefreshing(true)}
+        />
+      }
+    >
+      {new Array(100).fill(1).map((_, idx) => (
+        <Text key={idx} style={{ color: '#000' }}>
+          text text text
+        </Text>
       ))}
     </ScrollView>
   );
-};
+});
 
 const MyComponent = () => {
-  const { openSheet } = useBottomSheet();
+  const { openSheet } = useBottomSheet(SheetContent, { mode: 'sheet' });
 
   return (
     <View style={styles.container}>
-      <Button
-        onPress={() =>
-          openSheet({
-            content: SheetContent,
-          })
-        }
-        title="Open it"
-      />
+      <Button onPress={() => openSheet()} title="Open it" />
     </View>
   );
 };

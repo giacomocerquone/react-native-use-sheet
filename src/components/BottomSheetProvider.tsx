@@ -19,21 +19,20 @@ import {
   State,
   PanGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
-import type { nodeType, OpenSheetOptions } from 'src/types';
+import type { contentType, OpenSheetOptions } from 'src/types';
 import BottomSheet from './BottomSheet';
 import { BottomSheetContext } from './useBottomSheet';
 
+// TODO should be a third of the bottomsheet's height
 const PULL_DOWN_OFFSET = 80;
 
-export const BottomSheetProvider: FunctionComponent<{
-  showHandle: boolean;
-}> = ({ children }) => {
-  // TODO showhandle
+export const BottomSheetProvider: FunctionComponent = ({ children }) => {
   const [state, setState] = useState<{
-    content?: nodeType;
+    content?: contentType;
     rendered: boolean;
     containerStyle?: ViewStyle;
-  }>({ rendered: false });
+    mode: 'sheet' | 'modal';
+  }>({ rendered: false, mode: 'modal' });
   const [visible, setVisible] = useState(false);
   const { height } = useWindowDimensions();
   const opacity = useRef(new Animated.Value(0)).current;
@@ -41,6 +40,16 @@ export const BottomSheetProvider: FunctionComponent<{
   const panGestureRef = useRef();
   const scrollRef = useRef();
   const [enabled, setEnabled] = useState(true);
+
+  // TODO implement mode
+
+  // useEffect(() => {
+  //   if (state.mode === 'sheet') {
+  //     opacity.setValue(1);
+  //     translateY.setValue(height - (height / 100) * 15);
+  //     setVisible(true), setState((s) => ({ ...s, rendered: true }));
+  //   }
+  // }, [height, opacity, state.mode, translateY]);
 
   const onScroll = ({
     nativeEvent,
@@ -57,7 +66,7 @@ export const BottomSheetProvider: FunctionComponent<{
   const scrollViewProps = {
     onScroll,
     ref: scrollRef,
-    scrollEventThrottle: 16, // If not set, the onScroll handler will fire only once on web
+    scrollEventThrottle: 16,
     waitFor: enabled ? panGestureRef : scrollRef,
   };
 
@@ -68,18 +77,20 @@ export const BottomSheetProvider: FunctionComponent<{
   }, [state.rendered]);
 
   const openSheet = useCallback(
-    ({ content, containerStyle }: OpenSheetOptions) => {
-      setState((s) => ({ ...s, rendered: true, content, containerStyle }));
+    ({ content, containerStyle }: OpenSheetOptions = {}) => {
+      setState((s) => {
+        if (content) {
+          return { ...s, rendered: true, content, containerStyle };
+        }
+
+        return { ...s, rendered: true, containerStyle };
+      });
     },
     []
   );
 
   const closeSheet = useCallback(() => {
     setVisible(false);
-  }, []);
-
-  const setRendered = useCallback((rendered: boolean) => {
-    setState((s) => ({ ...s, rendered }));
   }, []);
 
   const onSwipeDown = useCallback(
@@ -128,7 +139,6 @@ export const BottomSheetProvider: FunctionComponent<{
       openSheet,
       closeSheet,
       visible,
-      setRendered,
       opacity,
       translateY,
       height,
@@ -136,13 +146,13 @@ export const BottomSheetProvider: FunctionComponent<{
       onSwipeDown,
       onGestureStateChange,
       enabled,
+      setState,
     };
   }, [
     state,
     openSheet,
     closeSheet,
     visible,
-    setRendered,
     opacity,
     translateY,
     height,
@@ -150,6 +160,7 @@ export const BottomSheetProvider: FunctionComponent<{
     onSwipeDown,
     onGestureStateChange,
     enabled,
+    setState,
   ]);
 
   return (
@@ -157,7 +168,7 @@ export const BottomSheetProvider: FunctionComponent<{
       <BottomSheetContext.Provider value={providerValue}>
         {children}
         <BottomSheet style={state.containerStyle ?? {}}>
-          {state.content && state.content(scrollViewProps ?? {})}
+          {state.content && <state.content {...scrollViewProps} />}
         </BottomSheet>
       </BottomSheetContext.Provider>
     </GestureHandlerRootView>

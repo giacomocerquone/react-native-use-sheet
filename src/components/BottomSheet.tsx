@@ -18,7 +18,6 @@ const BottomSheet: FunctionComponent<{
     visible,
     rendered,
     closeSheet,
-    setRendered,
     opacity,
     translateY,
     height,
@@ -26,6 +25,7 @@ const BottomSheet: FunctionComponent<{
     onSwipeDown,
     onGestureStateChange,
     enabled,
+    setState,
   } = useBottomSheet();
 
   useEffect(() => {
@@ -55,10 +55,10 @@ const BottomSheet: FunctionComponent<{
           useNativeDriver: true,
         }),
       ]).start(() => {
-        setRendered(false);
+        setState((s) => ({ ...s, rendered: false }));
       });
     }
-  }, [height, opacity, visible, translateY, closeSheet, setRendered]);
+  }, [height, opacity, visible, translateY, closeSheet, setState]);
 
   if (!rendered) {
     return null;
