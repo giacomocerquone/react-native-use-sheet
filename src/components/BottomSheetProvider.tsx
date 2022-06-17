@@ -6,52 +6,32 @@ import {
   FunctionComponent,
   useEffect,
   useRef,
-  MutableRefObject,
 } from 'react';
-import type { ViewStyle } from 'react-native';
+import type {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ViewStyle,
+} from 'react-native';
 import { Animated, useWindowDimensions } from 'react-native';
 import {
   GestureHandlerRootView,
   PanGestureHandlerGestureEvent,
   State,
-  PanGestureHandler,
   PanGestureHandlerStateChangeEvent,
+  ScrollView,
 } from 'react-native-gesture-handler';
+import type { nodeType, OpenSheetOptions } from 'src/types';
 import BottomSheet from './BottomSheet';
 import { BottomSheetContext } from './useBottomSheet';
 
-interface OpenSheetOptions {
-  node: FunctionComponent<typeof scrollViewProps>;
-  containerStyle?: ViewStyle;
-}
-
-export interface SheetContext {
-  openSheet: ({ node }: OpenSheetOptions) => void;
-  closeSheet: () => void;
-  node?: FunctionComponent<typeof scrollViewProps>;
-  rendered: boolean;
-  visible: boolean;
-  setRendered: (rendered: boolean) => void;
-  opacity: Animated.Value;
-  translateY: Animated.Value;
-  height: number;
-  panGestureRef: MutableRefObject<PanGestureHandler | undefined>;
-  onSwipeDown: ({ nativeEvent }: PanGestureHandlerGestureEvent) => void;
-  onGestureStateChange: ({
-    nativeEvent,
-  }: PanGestureHandlerStateChangeEvent) => void;
-}
-
 const PULL_DOWN_OFFSET = 80;
-
-export const scrollViewProps = {};
 
 export const BottomSheetProvider: FunctionComponent<{
   showHandle: boolean;
 }> = ({ children }) => {
   // TODO showhandle
   const [state, setState] = useState<{
-    node?: FunctionComponent<typeof scrollViewProps>;
+    node?: nodeType;
     rendered: boolean;
     containerStyle?: ViewStyle;
   }>({ rendered: false });
@@ -60,6 +40,28 @@ export const BottomSheetProvider: FunctionComponent<{
   const opacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(height)).current;
   const panGestureRef = useRef();
+  const scrollRef = useRef();
+  const [enabled, setEnabled] = useState(true);
+
+  const onScroll = ({
+    nativeEvent,
+  }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (nativeEvent.contentOffset.y <= 0 && !enabled) {
+      setEnabled(true);
+    }
+
+    if (nativeEvent.contentOffset.y > 0 && enabled) {
+      setEnabled(false);
+    }
+  };
+
+  const scrollViewProps = {
+    gestureEnabled: enabled,
+    onScroll,
+    scrollRef,
+    scrollEventThrottle: 16, // If not set, the onScroll handler will fire only once on web
+    waitFor: enabled ? panGestureRef : scrollRef,
+  };
 
   useEffect(() => {
     if (state.rendered) {
@@ -84,7 +86,7 @@ export const BottomSheetProvider: FunctionComponent<{
 
   const onSwipeDown = useCallback(
     ({ nativeEvent }: PanGestureHandlerGestureEvent) => {
-      // if (!enabled) return;
+      if (!enabled) return;
 
       const { translationY } = nativeEvent;
 
@@ -93,7 +95,7 @@ export const BottomSheetProvider: FunctionComponent<{
         opacity.setValue(0.5 - translationY / 1000);
       }
     },
-    [opacity, translateY]
+    [enabled, opacity, translateY]
   );
 
   const onGestureStateChange = useCallback(
@@ -135,6 +137,7 @@ export const BottomSheetProvider: FunctionComponent<{
       panGestureRef,
       onSwipeDown,
       onGestureStateChange,
+      enabled,
     };
   }, [
     state,
@@ -148,6 +151,7 @@ export const BottomSheetProvider: FunctionComponent<{
     panGestureRef,
     onSwipeDown,
     onGestureStateChange,
+    enabled,
   ]);
 
   return (
@@ -155,7 +159,7 @@ export const BottomSheetProvider: FunctionComponent<{
       <BottomSheetContext.Provider value={providerValue}>
         {children}
         <BottomSheet style={state.containerStyle ?? {}}>
-          {state.node && <state.node {...scrollViewProps} />}
+          {state.node && <state.node {...(scrollViewProps ?? {})} />}
         </BottomSheet>
       </BottomSheetContext.Provider>
     </GestureHandlerRootView>

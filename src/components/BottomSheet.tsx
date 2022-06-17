@@ -9,6 +9,8 @@ import React, { FunctionComponent, useEffect } from 'react';
 import { useBottomSheet } from './useBottomSheet';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
+const Handle = () => <View style={styles.handle} />;
+
 const BottomSheet: FunctionComponent<{
   style: ViewStyle;
 }> = ({ style, children }) => {
@@ -23,6 +25,7 @@ const BottomSheet: FunctionComponent<{
     panGestureRef,
     onSwipeDown,
     onGestureStateChange,
+    enabled,
   } = useBottomSheet();
 
   useEffect(() => {
@@ -70,7 +73,7 @@ const BottomSheet: FunctionComponent<{
       </TouchableWithoutFeedback>
       <PanGestureHandler
         onHandlerStateChange={onGestureStateChange}
-        enabled={true} // TODO dynamic option here
+        enabled={enabled}
         ref={panGestureRef}
         activeOffsetY={5}
         failOffsetY={-5}
@@ -85,6 +88,7 @@ const BottomSheet: FunctionComponent<{
             style,
           ]}
         >
+          <Handle />
           {children}
         </Animated.View>
       </PanGestureHandler>
@@ -105,5 +109,13 @@ const styles = StyleSheet.create({
     right: 0,
     borderTopEndRadius: 16,
     borderTopStartRadius: 16,
+  },
+  handle: {
+    marginBottom: 12,
+    width: 32,
+    alignSelf: 'center',
+    borderWidth: 2,
+    borderRadius: 12,
+    borderColor: 'grey',
   },
 });

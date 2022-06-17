@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { SheetContext } from './BottomSheetProvider';
+import type { SheetContext } from 'src/types';
 
 export const BottomSheetContext = createContext<SheetContext | undefined>(
   undefined
