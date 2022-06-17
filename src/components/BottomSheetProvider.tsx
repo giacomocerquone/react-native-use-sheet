@@ -15,7 +15,7 @@ import {
   State,
   PanGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
-import type { OpenSheetOptions, SheetState } from 'src/types';
+import type { SheetOptions, SheetState } from 'src/types';
 import BottomSheet from './BottomSheet';
 import { BottomSheetContext } from './useBottomSheet';
 
@@ -70,13 +70,23 @@ export const BottomSheetProvider: FunctionComponent = ({ children }) => {
   }, [state.rendered]);
 
   const openSheet = useCallback(
-    ({ content, containerStyle }: OpenSheetOptions = {}) => {
+    ({ content, containerStyle, mode }: SheetOptions = {}) => {
       setState((s) => {
+        const newState = { ...s, rendered: true };
+
+        // we have these ifs to avoid having issues
+        // if users pass this function directly to an onPress
         if (content) {
-          return { ...s, rendered: true, content, containerStyle };
+          newState.content = content;
+        }
+        if (mode) {
+          newState.mode = mode;
+        }
+        if (containerStyle) {
+          newState.containerStyle = containerStyle;
         }
 
-        return { ...s, rendered: true, containerStyle };
+        return newState;
       });
     },
     []

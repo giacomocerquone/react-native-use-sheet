@@ -32,7 +32,9 @@ const SheetContent = forwardRef<ScrollView>((props, ref) => {
 });
 
 const MyComponent = () => {
-  const { openSheet } = useBottomSheet(SheetContent, { mode: 'sheet' });
+  const { openSheet } = useBottomSheet({
+    content: SheetContent,
+  });
 
   return (
     <View style={styles.container}>

@@ -13,11 +13,7 @@ import type {
   ScrollView,
 } from 'react-native-gesture-handler';
 
-export interface HookOptions {
-  mode: 'modal' | 'sheet';
-}
-
-export type contentType = (
+type Content = (
   props:
     | {
         onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -30,20 +26,23 @@ export type contentType = (
     | {}
 ) => ReactElement;
 
-export interface OpenSheetOptions {
-  content?: contentType;
+type Mode = 'sheet' | 'modal';
+
+export interface SheetOptions {
+  content?: Content;
   containerStyle?: ViewStyle;
+  mode?: Mode;
 }
 
 export interface SheetState {
-  content?: contentType;
+  content?: Content;
   rendered: boolean;
   containerStyle?: ViewStyle;
-  mode: 'sheet' | 'modal';
+  mode: Mode;
 }
 
 export interface SheetContext extends SheetState {
-  openSheet: ({ content }: OpenSheetOptions) => void;
+  openSheet: ({ content }: SheetOptions) => void;
   closeSheet: () => void;
   visible: boolean;
   opacity: Animated.Value;
