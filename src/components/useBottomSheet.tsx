@@ -6,35 +6,78 @@ import {
   useMemo,
   createContext,
   useContext,
+  FunctionComponent,
   useEffect,
-  useRef,
 } from 'react';
+import type { ViewStyle } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet from './BottomSheet';
 
-export const BottomSheetContext = createContext<IToastContext | undefined>(
+const scrollViewProps = {};
+
+interface OpenSheetOptions {
+  node: FunctionComponent<typeof scrollViewProps>;
+  containerStyle?: ViewStyle;
+}
+
+interface SheetContext {
+  openSheet: ({ node }: OpenSheetOptions) => void;
+  closeSheet: () => void;
+  node?: FunctionComponent<typeof scrollViewProps>;
+  rendered: boolean;
+  visible: boolean;
+  setRendered: (rendered: boolean) => void;
+}
+
+export const BottomSheetContext = createContext<SheetContext | undefined>(
   undefined
 );
 
-const scrollViewProps = {};
-
 export const BottomSheetProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<{
-    children?: ReactNode;
-  }>();
+    node?: FunctionComponent<typeof scrollViewProps>;
+    rendered: boolean;
+    containerStyle?: ViewStyle;
+  }>({ rendered: false });
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (state.rendered) {
+      setVisible(true);
+    }
+  }, [state.rendered]);
+
+  const openSheet = useCallback(
+    ({ node, containerStyle }: OpenSheetOptions) => {
+      setState((s) => ({ ...s, rendered: true, node, containerStyle }));
+    },
+    []
+  );
+
+  const closeSheet = useCallback(() => {
+    setVisible(false);
+  }, []);
+
+  const setRendered = useCallback((rendered: boolean) => {
+    setState((s) => ({ ...s, rendered }));
+  }, []);
 
   const providerValue = useMemo(() => {
-    return { hideToast, showToast, ...state };
-  }, [showToast, state, hideToast]);
+    return {
+      ...state,
+      openSheet,
+      closeSheet,
+      visible,
+      setRendered,
+    };
+  }, [closeSheet, openSheet, state, visible, setRendered]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetContext.Provider value={providerValue}>
         {children}
-        <BottomSheet>
-          {typeof state?.children === 'function'
-            ? state.children(scrollViewProps)
-            : state?.children}
+        <BottomSheet style={state.containerStyle ?? {}}>
+          {state.node && <state.node {...scrollViewProps} />}
         </BottomSheet>
       </BottomSheetContext.Provider>
     </GestureHandlerRootView>

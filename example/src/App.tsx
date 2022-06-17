@@ -1,19 +1,37 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-usebottomsheet';
+import { StyleSheet, View, Button, Text } from 'react-native';
+import {
+  useBottomSheet,
+  BottomSheetProvider,
+} from 'react-native-usebottomsheet';
 
-export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+const BottomSheetUsage = () => {
+  const { openSheet } = useBottomSheet();
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Button
+        onPress={() =>
+          openSheet({
+            node: (props) => (
+              <Text style={{ color: '#000' }} {...props}>
+                hihihihihihihihihihihihihihihi
+              </Text>
+            ),
+          })
+        }
+        title="Open it"
+      />
     </View>
+  );
+};
+
+export default function App() {
+  return (
+    <BottomSheetProvider>
+      <BottomSheetUsage />
+    </BottomSheetProvider>
   );
 }
 
