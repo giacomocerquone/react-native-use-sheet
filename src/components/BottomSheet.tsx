@@ -84,6 +84,7 @@ const BottomSheet: FunctionComponent<{
             styles.sheet,
             {
               transform: [{ translateY }],
+              maxHeight: (height / 100) * 90,
             },
             style,
           ]}

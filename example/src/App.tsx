@@ -10,14 +10,14 @@ import {
 const SheetContent = (props) => {
   return (
     <ScrollView {...props}>
-      {new Array(10).fill(1).map(() => (
+      {new Array(100).fill(1).map(() => (
         <Text style={{ color: '#000' }}>text text text</Text>
       ))}
     </ScrollView>
   );
 };
 
-const BottomSheetUsage = () => {
+const MyComponent = () => {
   const { openSheet } = useBottomSheet();
 
   return (
@@ -25,7 +25,7 @@ const BottomSheetUsage = () => {
       <Button
         onPress={() =>
           openSheet({
-            node: SheetContent,
+            content: SheetContent,
           })
         }
         title="Open it"
@@ -37,7 +37,7 @@ const BottomSheetUsage = () => {
 export default function App() {
   return (
     <BottomSheetProvider>
-      <BottomSheetUsage />
+      <MyComponent />
     </BottomSheetProvider>
   );
 }

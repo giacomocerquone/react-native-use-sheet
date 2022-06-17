@@ -30,7 +30,7 @@ export const BottomSheetProvider: FunctionComponent<{
 }> = ({ children }) => {
   // TODO showhandle
   const [state, setState] = useState<{
-    node?: nodeType;
+    content?: nodeType;
     rendered: boolean;
     containerStyle?: ViewStyle;
   }>({ rendered: false });
@@ -68,9 +68,8 @@ export const BottomSheetProvider: FunctionComponent<{
   }, [state.rendered]);
 
   const openSheet = useCallback(
-    ({ node, containerStyle }: OpenSheetOptions) => {
-      // TODO should wrap the node with forward ref so to avoid using scrollRef
-      setState((s) => ({ ...s, rendered: true, node, containerStyle }));
+    ({ content, containerStyle }: OpenSheetOptions) => {
+      setState((s) => ({ ...s, rendered: true, content, containerStyle }));
     },
     []
   );
@@ -158,7 +157,7 @@ export const BottomSheetProvider: FunctionComponent<{
       <BottomSheetContext.Provider value={providerValue}>
         {children}
         <BottomSheet style={state.containerStyle ?? {}}>
-          {state.node && state.node(scrollViewProps ?? {})}
+          {state.content && state.content(scrollViewProps ?? {})}
         </BottomSheet>
       </BottomSheetContext.Provider>
     </GestureHandlerRootView>

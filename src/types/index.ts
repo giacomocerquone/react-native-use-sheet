@@ -26,14 +26,14 @@ export type nodeType = (
 ) => ReactElement;
 
 export interface OpenSheetOptions {
-  node: nodeType;
+  content: nodeType;
   containerStyle?: ViewStyle;
 }
 
 export interface SheetContext {
-  openSheet: ({ node }: OpenSheetOptions) => void;
+  openSheet: ({ content }: OpenSheetOptions) => void;
   closeSheet: () => void;
-  node?: nodeType;
+  content?: nodeType;
   rendered: boolean;
   visible: boolean;
   setRendered: (rendered: boolean) => void;
