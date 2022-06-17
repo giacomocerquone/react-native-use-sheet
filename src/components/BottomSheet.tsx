@@ -3,20 +3,27 @@ import {
   View,
   ViewStyle,
   TouchableWithoutFeedback,
-  useWindowDimensions,
   Animated,
 } from 'react-native';
-import React, { FunctionComponent, ReactNode, useEffect, useRef } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { useBottomSheet } from './useBottomSheet';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 
 const BottomSheet: FunctionComponent<{
   style: ViewStyle;
-  children: ReactNode;
 }> = ({ style, children }) => {
-  const { visible, rendered, closeSheet, setRendered } = useBottomSheet();
-  const { height } = useWindowDimensions();
-  const opacity = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(height)).current;
+  const {
+    visible,
+    rendered,
+    closeSheet,
+    setRendered,
+    opacity,
+    translateY,
+    height,
+    panGestureRef,
+    onSwipeDown,
+    onGestureStateChange,
+  } = useBottomSheet();
 
   useEffect(() => {
     if (visible) {
@@ -61,18 +68,26 @@ const BottomSheet: FunctionComponent<{
           style={[StyleSheet.absoluteFill, styles.backdrop, { opacity }]}
         />
       </TouchableWithoutFeedback>
-      <Animated.View
-        style={[
-          styles.sheet,
-          {
-            transform: [{ translateY }],
-          },
-          style,
-        ]}
+      <PanGestureHandler
+        onHandlerStateChange={onGestureStateChange}
+        enabled={true} // TODO dynamic option here
+        ref={panGestureRef}
+        activeOffsetY={5}
+        failOffsetY={-5}
+        onGestureEvent={onSwipeDown}
       >
-        {/* TODO */}
-        {children as any}
-      </Animated.View>
+        <Animated.View
+          style={[
+            styles.sheet,
+            {
+              transform: [{ translateY }],
+            },
+            style,
+          ]}
+        >
+          {children}
+        </Animated.View>
+      </PanGestureHandler>
     </View>
   );
 };

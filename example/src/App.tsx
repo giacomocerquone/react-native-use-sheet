@@ -1,10 +1,19 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Button, Text } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import {
   useBottomSheet,
   BottomSheetProvider,
 } from 'react-native-usebottomsheet';
+
+const SheetContent = (props) => (
+  <ScrollView {...props}>
+    {new Array(10).fill(1).map(() => (
+      <Text style={{ color: '#000' }}>text text text</Text>
+    ))}
+  </ScrollView>
+);
 
 const BottomSheetUsage = () => {
   const { openSheet } = useBottomSheet();
@@ -14,11 +23,7 @@ const BottomSheetUsage = () => {
       <Button
         onPress={() =>
           openSheet({
-            node: (props) => (
-              <Text style={{ color: '#000' }} {...props}>
-                hihihihihihihihihihihihihihihi
-              </Text>
-            ),
+            node: SheetContent,
           })
         }
         title="Open it"
