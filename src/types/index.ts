@@ -35,11 +35,16 @@ export interface OpenSheetOptions {
   containerStyle?: ViewStyle;
 }
 
-export interface SheetContext {
-  openSheet: ({ content }: OpenSheetOptions) => void;
-  closeSheet: () => void;
+export interface SheetState {
   content?: contentType;
   rendered: boolean;
+  containerStyle?: ViewStyle;
+  mode: 'sheet' | 'modal';
+}
+
+export interface SheetContext extends SheetState {
+  openSheet: ({ content }: OpenSheetOptions) => void;
+  closeSheet: () => void;
   visible: boolean;
   opacity: Animated.Value;
   translateY: Animated.Value;
@@ -50,12 +55,5 @@ export interface SheetContext {
     nativeEvent,
   }: PanGestureHandlerStateChangeEvent) => void;
   enabled: boolean;
-  setState: React.Dispatch<
-    React.SetStateAction<{
-      content?: contentType | undefined;
-      rendered: boolean;
-      containerStyle?: ViewStyle | undefined;
-    }>
-  >;
-  mode: 'modal' | 'sheet';
+  setState: React.Dispatch<React.SetStateAction<SheetState>>;
 }

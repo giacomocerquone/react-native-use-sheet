@@ -7,11 +7,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import type {
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  ViewStyle,
-} from 'react-native';
+import type { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { Animated, useWindowDimensions } from 'react-native';
 import {
   GestureHandlerRootView,
@@ -19,7 +15,7 @@ import {
   State,
   PanGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
-import type { contentType, OpenSheetOptions } from 'src/types';
+import type { OpenSheetOptions, SheetState } from 'src/types';
 import BottomSheet from './BottomSheet';
 import { BottomSheetContext } from './useBottomSheet';
 
@@ -27,12 +23,10 @@ import { BottomSheetContext } from './useBottomSheet';
 const PULL_DOWN_OFFSET = 80;
 
 export const BottomSheetProvider: FunctionComponent = ({ children }) => {
-  const [state, setState] = useState<{
-    content?: contentType;
-    rendered: boolean;
-    containerStyle?: ViewStyle;
-    mode: 'sheet' | 'modal';
-  }>({ rendered: false, mode: 'modal' });
+  const [state, setState] = useState<SheetState>({
+    rendered: false,
+    mode: 'modal',
+  });
   const [visible, setVisible] = useState(false);
   const { height } = useWindowDimensions();
   const opacity = useRef(new Animated.Value(0)).current;
@@ -51,24 +45,23 @@ export const BottomSheetProvider: FunctionComponent = ({ children }) => {
   //   }
   // }, [height, opacity, state.mode, translateY]);
 
-  const onScroll = ({
-    nativeEvent,
-  }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (nativeEvent.contentOffset.y <= 0 && !enabled) {
-      setEnabled(true);
-    }
+  const scrollViewProps = useMemo(
+    () => ({
+      onScroll: ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+        if (nativeEvent.contentOffset.y <= 0 && !enabled) {
+          setEnabled(true);
+        }
 
-    if (nativeEvent.contentOffset.y > 0 && enabled) {
-      setEnabled(false);
-    }
-  };
-
-  const scrollViewProps = {
-    onScroll,
-    ref: scrollRef,
-    scrollEventThrottle: 16,
-    waitFor: enabled ? panGestureRef : scrollRef,
-  };
+        if (nativeEvent.contentOffset.y > 0 && enabled) {
+          setEnabled(false);
+        }
+      },
+      ref: scrollRef,
+      scrollEventThrottle: 16,
+      waitFor: enabled ? panGestureRef : scrollRef,
+    }),
+    [enabled]
+  );
 
   useEffect(() => {
     if (state.rendered) {
