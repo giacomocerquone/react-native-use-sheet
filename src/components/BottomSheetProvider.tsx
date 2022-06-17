@@ -18,7 +18,6 @@ import {
   PanGestureHandlerGestureEvent,
   State,
   PanGestureHandlerStateChangeEvent,
-  ScrollView,
 } from 'react-native-gesture-handler';
 import type { nodeType, OpenSheetOptions } from 'src/types';
 import BottomSheet from './BottomSheet';
@@ -56,9 +55,8 @@ export const BottomSheetProvider: FunctionComponent<{
   };
 
   const scrollViewProps = {
-    gestureEnabled: enabled,
     onScroll,
-    scrollRef,
+    ref: scrollRef,
     scrollEventThrottle: 16, // If not set, the onScroll handler will fire only once on web
     waitFor: enabled ? panGestureRef : scrollRef,
   };
@@ -71,6 +69,7 @@ export const BottomSheetProvider: FunctionComponent<{
 
   const openSheet = useCallback(
     ({ node, containerStyle }: OpenSheetOptions) => {
+      // TODO should wrap the node with forward ref so to avoid using scrollRef
       setState((s) => ({ ...s, rendered: true, node, containerStyle }));
     },
     []
@@ -159,7 +158,7 @@ export const BottomSheetProvider: FunctionComponent<{
       <BottomSheetContext.Provider value={providerValue}>
         {children}
         <BottomSheet style={state.containerStyle ?? {}}>
-          {state.node && <state.node {...(scrollViewProps ?? {})} />}
+          {state.node && state.node(scrollViewProps ?? {})}
         </BottomSheet>
       </BottomSheetContext.Provider>
     </GestureHandlerRootView>

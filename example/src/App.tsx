@@ -9,7 +9,7 @@ import {
 
 const SheetContent = (props) => {
   return (
-    <ScrollView ref={props.scrollRef} {...props}>
+    <ScrollView {...props}>
       {new Array(10).fill(1).map(() => (
         <Text style={{ color: '#000' }}>text text text</Text>
       ))}

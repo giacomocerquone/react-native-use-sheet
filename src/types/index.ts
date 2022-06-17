@@ -1,8 +1,4 @@
-import type {
-  ComponentProps,
-  FunctionComponent,
-  MutableRefObject,
-} from 'react';
+import type { ComponentProps, MutableRefObject, ReactElement } from 'react';
 import type {
   Animated,
   NativeScrollEvent,
@@ -16,12 +12,18 @@ import type {
   ScrollView,
 } from 'react-native-gesture-handler';
 
-export type nodeType = FunctionComponent<{
-  onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-  scrollRef: React.MutableRefObject<any>;
-  scrollEventThrottle: ComponentProps<typeof ScrollView>['scrollEventThrottle']; // If not set, the onScroll handler will fire only once on web
-  waitFor: React.MutableRefObject<any>;
-}>;
+export type nodeType = (
+  props:
+    | {
+        onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+        scrollRef: React.MutableRefObject<any>;
+        scrollEventThrottle: ComponentProps<
+          typeof ScrollView
+        >['scrollEventThrottle']; // If not set, the onScroll handler will fire only once on web
+        waitFor: React.MutableRefObject<any>;
+      }
+    | {}
+) => ReactElement;
 
 export interface OpenSheetOptions {
   node: nodeType;
