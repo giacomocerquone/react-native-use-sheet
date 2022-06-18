@@ -35,7 +35,7 @@ const MyComponent = () => {
 
   return (
     <View style={styles.container}>
-      <Button onPress={() => openSheet()} title="Open it" />
+      <Button onPress={openSheet} title="Open it" />
     </View>
   );
 };
