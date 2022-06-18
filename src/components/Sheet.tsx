@@ -6,12 +6,12 @@ import {
   Animated,
 } from 'react-native';
 import React, { FunctionComponent, useEffect } from 'react';
-import { useBottomSheet } from './useBottomSheet';
+import { useSheet } from './useSheet';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
 const Handle = () => <View style={styles.handle} />;
 
-const BottomSheet: FunctionComponent<{
+const Sheet: FunctionComponent<{
   style: ViewStyle;
 }> = ({ style, children }) => {
   const {
@@ -26,7 +26,7 @@ const BottomSheet: FunctionComponent<{
     onGestureStateChange,
     enabled,
     setState,
-  } = useBottomSheet();
+  } = useSheet();
 
   useEffect(() => {
     if (visible) {
@@ -97,7 +97,7 @@ const BottomSheet: FunctionComponent<{
   );
 };
 
-export default BottomSheet;
+export default Sheet;
 
 const styles = StyleSheet.create({
   backdrop: { backgroundColor: '#000' },

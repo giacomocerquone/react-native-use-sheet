@@ -3,10 +3,7 @@ import * as React from 'react';
 import { useState, forwardRef } from 'react';
 import { StyleSheet, View, Button, Text, RefreshControl } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import {
-  useBottomSheet,
-  BottomSheetProvider,
-} from 'react-native-usebottomsheet';
+import { useSheet, SheetProvider } from 'react-native-use-sheet';
 
 const SheetContent = forwardRef<ScrollView>((props, ref) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -32,7 +29,7 @@ const SheetContent = forwardRef<ScrollView>((props, ref) => {
 });
 
 const MyComponent = () => {
-  const { openSheet } = useBottomSheet({
+  const { openSheet } = useSheet({
     content: SheetContent,
   });
 
@@ -45,9 +42,9 @@ const MyComponent = () => {
 
 export default function App() {
   return (
-    <BottomSheetProvider>
+    <SheetProvider>
       <MyComponent />
-    </BottomSheetProvider>
+    </SheetProvider>
   );
 }
 

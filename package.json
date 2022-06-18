@@ -1,7 +1,7 @@
 {
   "name": "react-native-use-sheet",
   "version": "0.2.0",
-  "description": "Interactive, hooks first React Native Bottom Sheet",
+  "description": "A simple yet elegant, fully featured Bottom Sheet for React Native with gestures and animations enabled 📱🫰",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
@@ -13,7 +13,7 @@
     "android",
     "ios",
     "cpp",
-    "react-native-usebottomsheet.podspec",
+    "react-native-use-sheet.podspec",
     "!lib/typescript/example",
     "!android/build",
     "!ios/build",
@@ -36,13 +36,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/giacomocerquone/react-native-usebottomsheet",
+  "repository": "https://github.com/giacomocerquone/react-native-use-sheet",
   "author": "Giacomo Cerquone <cerquone96@hotmail.it> (https://github.com/giacomocerquone)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/giacomocerquone/react-native-usebottomsheet/issues"
+    "url": "https://github.com/giacomocerquone/react-native-use-sheet/issues"
   },
-  "homepage": "https://github.com/giacomocerquone/react-native-usebottomsheet#readme",
+  "homepage": "https://github.com/giacomocerquone/react-native-use-sheet#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

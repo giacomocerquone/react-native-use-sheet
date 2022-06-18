@@ -41,7 +41,7 @@ export interface SheetState {
   mode: Mode;
 }
 
-export interface SheetContext extends SheetState {
+export interface ISheetContext extends SheetState {
   openSheet: ({ content }: SheetOptions) => void;
   closeSheet: () => void;
   visible: boolean;

@@ -1,22 +1,16 @@
 {
-  "name": "react-native-usebottomsheet-example",
-  "displayName": "Usebottomsheet Example",
+  "name": "react-native-use-sheet-example",
+  "displayName": "use-sheet Example",
   "expo": {
-    "name": "react-native-usebottomsheet-example",
-    "slug": "react-native-usebottomsheet-example",
-    "description": "Example app for react-native-usebottomsheet",
+    "name": "react-native-use-sheet-example",
+    "slug": "react-native-use-sheet-example",
+    "description": "Example app for react-native-use-sheet",
     "privacy": "public",
     "version": "1.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "ios": {
       "supportsTablet": true
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"]
   }
 }

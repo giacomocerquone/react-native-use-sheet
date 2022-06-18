@@ -16,13 +16,13 @@ import {
   PanGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
 import type { SheetOptions, SheetState } from 'src/types';
-import BottomSheet from './BottomSheet';
-import { BottomSheetContext } from './useBottomSheet';
+import Sheet from './Sheet';
+import { SheetContext } from './useSheet';
 
 // TODO should be a third of the bottomsheet's height
 const PULL_DOWN_OFFSET = 80;
 
-export const BottomSheetProvider: FunctionComponent = ({ children }) => {
+export const SheetProvider: FunctionComponent = ({ children }) => {
   const [state, setState] = useState<SheetState>({
     rendered: false,
     mode: 'modal',
@@ -160,14 +160,14 @@ export const BottomSheetProvider: FunctionComponent = ({ children }) => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <BottomSheetContext.Provider value={providerValue}>
+      <SheetContext.Provider value={providerValue}>
         {children}
-        <BottomSheet style={state.containerStyle ?? {}}>
+        <Sheet style={state.containerStyle ?? {}}>
           {state.content && <state.content {...scrollViewProps} />}
-        </BottomSheet>
-      </BottomSheetContext.Provider>
+        </Sheet>
+      </SheetContext.Provider>
     </GestureHandlerRootView>
   );
 };
 
-export default BottomSheetProvider;
+export default SheetProvider;

@@ -1,18 +1,16 @@
 import { createContext, useContext, useEffect } from 'react';
-import type { SheetOptions, SheetContext } from 'src/types';
+import type { SheetOptions, ISheetContext } from 'src/types';
 
-export const BottomSheetContext = createContext<SheetContext | undefined>(
-  undefined
-);
+export const SheetContext = createContext<ISheetContext | undefined>(undefined);
 
-export const useBottomSheet = (
+export const useSheet = (
   { content, containerStyle, mode }: SheetOptions = { mode: 'sheet' }
 ) => {
-  const context = useContext(BottomSheetContext);
+  const context = useContext(SheetContext);
 
   if (!context) {
     throw new Error(
-      'Error: could not find toast context value; please ensure the component is wrapped in a <BottomSheetProvider>'
+      'Error: could not find toast context value; please ensure the component is wrapped in a <SheetProvider>'
     );
   }
 
