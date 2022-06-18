@@ -1,5 +1,5 @@
 {
-  "name": "react-native-usebottomsheet",
+  "name": "@gc/bottom-sheet",
   "version": "0.1.0",
   "description": "Interactive, hooks first React Native Bottom Sheet",
   "main": "lib/commonjs/index",
