@@ -5,11 +5,9 @@ export const BottomSheetContext = createContext<SheetContext | undefined>(
   undefined
 );
 
-export const useBottomSheet = ({
-  content,
-  containerStyle,
-  mode,
-}: SheetOptions = {}) => {
+export const useBottomSheet = (
+  { content, containerStyle, mode }: SheetOptions = { mode: 'sheet' }
+) => {
   const context = useContext(BottomSheetContext);
 
   if (!context) {
@@ -22,19 +20,12 @@ export const useBottomSheet = ({
 
   useEffect(() => {
     setState((s) => {
-      const newState = { ...s };
-
-      if (content) {
-        newState.content = content;
-      }
-      if (mode) {
-        newState.mode = mode;
-      }
-      if (containerStyle) {
-        newState.containerStyle = containerStyle;
-      }
-
-      return newState;
+      return {
+        ...s,
+        ...(content && { content }),
+        ...(mode && { mode }),
+        ...(containerStyle && { containerStyle }),
+      };
     });
   }, [containerStyle, content, mode, setState]);
 

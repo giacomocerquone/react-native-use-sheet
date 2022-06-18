@@ -72,21 +72,13 @@ export const BottomSheetProvider: FunctionComponent = ({ children }) => {
   const openSheet = useCallback(
     ({ content, containerStyle, mode }: SheetOptions = {}) => {
       setState((s) => {
-        const newState = { ...s, rendered: true };
-
-        // we have these ifs to avoid having issues
-        // if users pass this function directly to an onPress
-        if (content) {
-          newState.content = content;
-        }
-        if (mode) {
-          newState.mode = mode;
-        }
-        if (containerStyle) {
-          newState.containerStyle = containerStyle;
-        }
-
-        return newState;
+        return {
+          ...s,
+          rendered: true,
+          ...(content && { content }),
+          ...(mode && { mode }),
+          ...(containerStyle && { containerStyle }),
+        };
       });
     },
     []
