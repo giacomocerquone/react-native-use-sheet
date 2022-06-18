@@ -11,7 +11,7 @@ npm install react-native-usebottomsheet
 ## Usage
 
 ```js
-import { multiply } from "react-native-usebottomsheet";
+import { multiply } from 'react-native-usebottomsheet';
 
 // ...
 
