@@ -6,8 +6,9 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
+  title: "React Native useSheet",
+  tagline:
+    "A simple yet elegant, fully featured Bottom Sheet for React Native with gestures and animations enabled 📱🫰",
   url: "https://giacomocerquone.github.io/",
   baseUrl: "/react-native-use-sheet/",
   onBrokenLinks: "throw",
@@ -38,14 +39,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+            "https://github.com/giacomocerquone/react-native-use-sheet/tree/website",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -58,21 +52,16 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: "My Site",
-        logo: {
-          alt: "My Site Logo",
-          src: "img/logo.svg",
-        },
+        title: "React Native useSheet",
         items: [
           {
             type: "doc",
             docId: "intro",
             position: "left",
-            label: "Tutorial",
+            label: "Documentation",
           },
-          { to: "/blog", label: "Blog", position: "left" },
           {
-            href: "https://github.com/facebook/docusaurus",
+            href: "https://github.com/giacomocerquone/react-native-use-sheet",
             label: "GitHub",
             position: "right",
           },
@@ -85,8 +74,12 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Tutorial",
+                label: "Getting Started",
                 to: "/docs/intro",
+              },
+              {
+                label: "API",
+                to: "/docs/api",
               },
             ],
           },
@@ -111,17 +104,13 @@ const config = {
             title: "More",
             items: [
               {
-                label: "Blog",
-                to: "/blog",
-              },
-              {
                 label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
+                href: "https://github.com/giacomocerquone/react-native-use-sheet",
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `©${new Date().getFullYear()} Giacomo Cerquone, built with Docusaurus.<br/>Made with love from 🇮🇹`,
       },
       prism: {
         theme: lightCodeTheme,
