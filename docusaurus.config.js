@@ -8,8 +8,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "My Site",
   tagline: "Dinosaurs are cool",
-  url: "https://giacomocerquone.github.io/react-native-use-sheet/",
-  baseUrl: "/",
+  url: "https://giacomocerquone.github.io/",
+  baseUrl: "/react-native-use-sheet/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
