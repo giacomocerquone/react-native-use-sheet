@@ -115,8 +115,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     width: 32,
     alignSelf: 'center',
-    borderWidth: 2,
+    height: 4,
     borderRadius: 12,
     borderColor: 'grey',
+    backgroundColor: 'grey',
   },
 });
