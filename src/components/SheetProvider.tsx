@@ -4,7 +4,6 @@ import {
   useState,
   useMemo,
   FunctionComponent,
-  useEffect,
   useRef,
 } from 'react';
 import type { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
@@ -63,12 +62,6 @@ export const SheetProvider: FunctionComponent = ({ children }) => {
     [enabled]
   );
 
-  useEffect(() => {
-    if (state.rendered) {
-      setVisible(true);
-    }
-  }, [state.rendered]);
-
   const openSheet = useCallback(
     ({ content, containerStyle, mode }: SheetOptions = {}) => {
       setState((s) => {
@@ -80,6 +73,7 @@ export const SheetProvider: FunctionComponent = ({ children }) => {
           ...(containerStyle && { containerStyle }),
         };
       });
+      setVisible(true);
     },
     []
   );
