@@ -42,7 +42,7 @@ const Sheet: FunctionComponent<{
           useNativeDriver: true,
         }),
       ]).start();
-    } else {
+    } else if (rendered === true) {
       Animated.parallel([
         Animated.timing(opacity, {
           toValue: 0,
@@ -58,7 +58,7 @@ const Sheet: FunctionComponent<{
         setState((s) => ({ ...s, rendered: false }));
       });
     }
-  }, [height, opacity, visible, translateY, closeSheet, setState]);
+  }, [height, opacity, visible, translateY, closeSheet, setState, rendered]);
 
   if (!rendered) {
     return null;
