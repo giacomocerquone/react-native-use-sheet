@@ -8,6 +8,7 @@ import {
 import React, { FunctionComponent, useEffect } from 'react';
 import { useSheet } from './useSheet';
 import { PanGestureHandler } from 'react-native-gesture-handler';
+import useKHeight from '../hooks/useKHeight';
 
 const Handle = () => <View style={styles.handle} />;
 
@@ -27,6 +28,7 @@ const Sheet: FunctionComponent<{
     enabled,
     setState,
   } = useSheet();
+  const kHeight = useKHeight();
 
   useEffect(() => {
     if (visible) {
@@ -43,6 +45,7 @@ const Sheet: FunctionComponent<{
         }),
       ]).start();
     } else if (rendered === true) {
+      // means visible === false and rendered === true
       Animated.parallel([
         Animated.timing(opacity, {
           toValue: 0,
@@ -85,6 +88,7 @@ const Sheet: FunctionComponent<{
             {
               transform: [{ translateY }],
               maxHeight: (height / 100) * 90,
+              paddingBottom: kHeight + 24,
             },
             style,
           ]}

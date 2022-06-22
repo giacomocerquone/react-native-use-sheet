@@ -4,9 +4,6 @@ import { useState, forwardRef } from 'react';
 import { StyleSheet, View, Button, Text, TextInput } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useSheet, SheetProvider } from 'react-native-use-sheet';
-// import { listenToKeyboardEvents } from 'react-native-keyboard-aware-scroll-view';
-
-// const KeyboardAwareFlatList = listenToKeyboardEvents(FlatList);
 
 const SheetContent = forwardRef<FlatList>((props, ref) => {
   const [refreshing, setRefreshing] = useState(false);
