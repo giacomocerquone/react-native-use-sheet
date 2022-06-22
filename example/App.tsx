@@ -1,30 +1,34 @@
 import * as React from 'react';
 
 import { useState, forwardRef } from 'react';
-import { StyleSheet, View, Button, Text, RefreshControl } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, View, Button, Text, TextInput } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { useSheet, SheetProvider } from 'react-native-use-sheet';
+// import { listenToKeyboardEvents } from 'react-native-keyboard-aware-scroll-view';
 
-const SheetContent = forwardRef<ScrollView>((props, ref) => {
+// const KeyboardAwareFlatList = listenToKeyboardEvents(FlatList);
+
+const SheetContent = forwardRef<FlatList>((props, ref) => {
   const [refreshing, setRefreshing] = useState(false);
 
   return (
-    <ScrollView
+    <FlatList
       {...props}
       ref={ref}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => setRefreshing(true)}
-        />
+      data={new Array(100).fill(1)}
+      ListHeaderComponent={
+        <TextInput placeholder="hey there" onChangeText={() => null} />
       }
-    >
-      {new Array(100).fill(1).map((_, idx) => (
-        <Text key={idx} style={{ color: '#000' }}>
-          text text text
-        </Text>
-      ))}
-    </ScrollView>
+      refreshing={refreshing}
+      onRefresh={() => setRefreshing(true)}
+      renderItem={({ index: idx }) => {
+        return (
+          <Text key={idx} style={{ color: '#000' }}>
+            text text text
+          </Text>
+        );
+      }}
+    />
   );
 });
 
